@@ -1,0 +1,110 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+        
+        {% endblock %}
+    </title>
+    <script src="https://cdn.bootcss.com/jquery/2.0.2/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="{% static 'imgs/favicon.ico' %}" rel="icon" type="image/x-icon">
+</head>
+<body>
+
+<div class="col-md-offset-1 col-md-10">
+
+<nav class="navbar navbar-default" style="height: 70px;background-color: #ffffff">
+  <div class="container-fluid" >
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'show_news' %}" style="margin-top: 10px">Masami</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin-top: 10px">
+      <ul class="nav navbar-nav">
+{#        <li><a href="{% url 'host' %}">热门话题</a></li>#}
+        <li><a href="{% url 'tech' %}">科技资讯</a></li>
+        <li><a href="{% url 'soccer' %}">足坛动态</a></li>
+      </ul>
+      <form class="navbar-form navbar-left" method="post" action="{% url 'search_news' %}">
+          {% csrf_token %}
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="搜索" name="search" id="search">
+        </div>
+        <button type="submit" class="btn btn-default">搜索</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+          {% if request.session.username %}
+              <li><a href="{% url 'personal' %}">{{ request.session.username }}</a></li>
+              <li><a href="">|</a></li>
+              <li><a href="{% url 'logout' %}">退出</a></li>
+          {% else %}
+            <li><a href="{% url 'login' %}">登陆</a></li>
+            <li><a href="{% url 'register' %}">注册</a></li>
+          {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div style="height: 10px"></div>
+
+    {% block main %}
+
+    {% endblock %}
+
+
+
+
+</div>
+
+<br><br>
+<div class="row">
+    <div class="col-md-12" style="text-align: center">
+    <div class="footer-link">
+        <p> © 2018 Masami
+
+        - 作者: <a rel="nofollow" href="#" target="_parent">牛少鹏</a></p>
+        <p>本网站数据均采集于网络，如果侵犯到您的版权，请联系站长删除 <a href="mailto:niushaop@163.com">站长邮箱</a></p>
+    </div>
+        </div>
+</div>
+</body>
+<script>
+   $(document).ready(function(){
+          $.ajaxSetup({
+               data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+          });
+         $('#registersb').submit(function(){
+             var uploadFormData = $('#register').serialize()
+              $.ajax({
+                  type:"POST",
+                  data: uploadFormData,
+                  url: "{% url 'register' %}",
+                  cache: false,
+                  dataType: "html",
+                  success: function(ret){
+                      //成功时弹出view传回来的结果即后端处理函数中HttpResponse的返回值
+                     $('#sql_output').html(ret)
+
+                 },
+                 error: function(){
+                     alert("false");
+                 }
+             });
+             return false;
+         });
+
+     });
+</script>
+</html>

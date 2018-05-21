@@ -1,0 +1,27 @@
+
+{% extends 'base.html' %}
+
+{% block main %}
+
+
+{% for n in news_list %}
+    <a href="/n/details/{{ n.id }}">{{ n.title }}</a><br>
+    <br>
+    {{ n.summary|safe }}
+    <hr>
+    <br>
+{% endfor %}
+{##}
+{#<div class="row">#}
+{#    新闻内容#}
+{#    <div class="col-md-9">#}
+{##}
+{#    </div>#}
+{#    侧边栏#}
+{#    <div class="col-md-offset-1 col-md-2">#}
+{##}
+{##}
+{#    </div>#}
+{#</div>#}
+
+{% endblock %}

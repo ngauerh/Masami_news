@@ -1,0 +1,78 @@
+
+{% extends 'base.html' %}
+
+{% block main %}
+
+    <h1>{{ ob_list.title }}</h1>
+          <form class="navbar-form navbar-left" method="post" action="{% url 'collect' %}">
+          {% csrf_token %}
+        <div class="form-group">
+          <input type="hidden" class="form-control" placeholder="搜索" name="nid" id="search" value="{{ ob_list.id }}">
+        </div>
+        <button type="submit" class="btn btn-default"style="font-size: 12px">收藏</button>
+      </form>
+    <br><br><br>
+
+{{ ob_list.details|safe }}
+
+    <br>
+    <a href="{{ ob_list.url }}">查看原文>></a>
+    <br>
+
+
+    <hr><br>
+
+        <div class="row">
+        <div class="col-md-12 ">
+            <form class="form-horizontal" role="form" action="{% url 'comment' %}" method="post">
+                    {% csrf_token %}
+                    {{ form }}
+              <div class="form-group">
+                <label for="inputPassword3" class="col-md-1 control-label">评论</label>
+                <div class="col-md-10">
+                    <textarea class="form-control" rows="2"  name="message" id="inputPassword3" placeholder="留言"></textarea>
+                </div>
+                  <input type="hidden" name="nid" class="" value="{{ ob_list.id }}"/>
+              </div>
+              <div class="form-group">
+                <div class="col-md-10 col-md-offset-1">
+                  <button type="submit" class="btn btn-default">发表</button>
+                </div>
+              </div>
+            </form>
+        </div>
+    </div>
+
+    <br><br>
+    <hr>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-7 ">
+            <h4>留言列表</h4>
+            {% for message in me_list %}
+
+            <table class="table">
+                <tr>
+                    <td style="border: 0px solid transparent">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span style="font-size: 20px"> {{ message.author  }} </span>
+                    </td>
+                    <td style="border: 0px solid transparent">
+                        <span class="glyphicon glyphicon-time" style="margin-left: 10px"></span>
+                        <span style="font-size: 14px">{{ message.date }} </span>
+                    </td>
+                </tr>
+            <tr>
+                <td colspan="3" style="border: 0px solid transparent" id="span2">{{ message.comments }}</td>
+            </tr>
+                <hr>
+            </table>
+        {% endfor %}
+
+
+        </div>
+    </div>
+    <br><br>
+{% endblock %}
+
+

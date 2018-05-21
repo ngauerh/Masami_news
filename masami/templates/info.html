@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ info }}
+
+{% if info == '注册成功！' or info == '账号不存在！' or info == '验证码错误！'%}
+    <p>两秒钟后转入如下链接，如果长时间没有响应请直接点击：</p>
+    <p><a href="{% url 'login' %}">跳转</a></p>
+    <meta http-equiv="refresh" content="2;url={% url 'login' %}">
+    {% elif info == '登陆成功！' or info == '没有搜索结果！' %}
+        <p>两秒钟后转入如下链接，如果长时间没有响应请直接点击：</p>
+    <p><a href="{% url 'news_show' %}">跳转</a></p>
+    <meta http-equiv="refresh" content="2;url={% url 'show_news' %}">
+
+{% endif %}
+
+
+
+</body>
+</html>
